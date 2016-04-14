@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  web:
+    image: ficusio/openresty:debian
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf:/opt/openresty/nginx/conf
+      - ./nginx/lua:/opt/openresty/nginx/lua
+  queue:
+    image: rabbitmq:management
+    hostname: rq1
+    environment:
+      RABBITMQ_ERLANG_COOKIE: secret_cookie
+  db:
+    image: postgres:latest
