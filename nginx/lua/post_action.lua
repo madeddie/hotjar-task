@@ -1,22 +1,19 @@
 -- luacheck: globals ngx, allow defined
+local queue = require "./lua/rabbitmq"
+
 ngx.req.read_body()
-local args, err = ngx.req.get_post_args()
-if not args then
-  ngx.say("failed to get post args: ", err)
+local args = ngx.req.get_body_data()
+if not args or args == '' then
+  ngx.status = ngx.HTTP_BAD_REQUEST
+  ngx.say("no post data received")
   return
 end
 
-if args == '' or next(args) == nil then
-  ngx.say("no post args received, try posting key `msg` with any string as value")
+local ok, err = queue.send(args)
+if not ok then
+  ngx.status = ngx.HTTP_INTERNAL_SERVER_ERROR
+  ngx.say("failed to accept your message: " .. err)
+  return
 end
-
--- TODO: test for msg key
--- TODO: sanity check input
--- TODO: write msg value to MQ
-for key, val in pairs(args) do
-  if type(val) == "table" then
-    ngx.say("key: ", key, ", val: ", table.concat(val, ", "))
-  else
-    ngx.say("key: ", key, ", val: ", val)
-  end
-end
+ngx.status = ngx.HTTP_ACCEPTED
+ngx.say(ok)

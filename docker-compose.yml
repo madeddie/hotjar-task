@@ -9,9 +9,14 @@ services:
       - ./nginx/conf:/opt/openresty/nginx/conf
       - ./nginx/lua:/opt/openresty/nginx/lua
   queue:
-    image: rabbitmq:management
+    #image: rabbitmq:management
+    build: ./rabbitmq
     hostname: rq1
     environment:
       RABBITMQ_ERLANG_COOKIE: secret_cookie
+    ports:
+      - "8080:15672"
   db:
     image: postgres:latest
+  sink:
+    build: ./sink
