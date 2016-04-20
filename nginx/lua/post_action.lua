@@ -1,5 +1,5 @@
 -- luacheck: globals ngx, allow defined
-local queue = require "./lua/rabbitmq"
+local queue = require "rabbitmq"
 
 ngx.req.read_body()
 local args = ngx.req.get_body_data()

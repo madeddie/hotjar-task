@@ -1,7 +1,7 @@
 -- luacheck: globals ngx, allow defined
 local M = {}
 local cjson = require "cjson"
-local rabbitmq = require "lib.resty.rabbitmqstomp"
+local rabbitmq = require "lib.rabbitmqstomp"
 local inspect = require "lib.inspect"
 
 local opts = { username = "guest",
