@@ -4,24 +4,38 @@ services:
   web:
     image: ficusio/openresty:debian
     depends_on:
-      - queue
+      - rq1
       - db
     ports:
       - 80:80
     volumes:
       - ./nginx/conf:/opt/openresty/nginx/conf
       - ./nginx/lua:/opt/openresty/nginx/lua
-  queue:
+    networks:
+      - default
+  rq1:
     build: ./rabbitmq
+    hostname: rq1
     depends_on:
       - db
     environment:
       RABBITMQ_ERLANG_COOKIE: secret_cookie
     ports:
       - 15672
+    networks:
+      default:
+        aliases:
+          - queue
   sink:
     build: ./sink
     depends_on:
       - db
+    networks:
+      - default
   db:
     image: postgres:latest
+    networks:
+      - default
+
+networks:
+  default:

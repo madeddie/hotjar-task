@@ -1,6 +1,6 @@
 -- luacheck: globals ngx, allow defined
 local M = {}
-local cjson = require "cjson"
+-- local cjson = require "cjson"
 local rabbitmq = require "lib.rabbitmqstomp"
 local inspect = require "lib.inspect"
 
@@ -22,7 +22,7 @@ function M.send(msg)
   headers["destination"] = "/queue/edwintask"
   headers["persistent"] = "true"
   
-  ok, err = mq:send(cjson.encode(msg), headers)
+  ok, err = mq:send(inspect(msg), headers)
   if not ok then
     local errmsg = "error publishing msg: " .. err
     ngx.log(ngx.INFO, errmsg)

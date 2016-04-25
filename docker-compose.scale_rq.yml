@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+  rq2:
+    build: ./rabbitmq
+    hostname: rq2
+    depends_on:
+      - db
+      - rq1
+    environment:
+      RABBITMQ_ERLANG_COOKIE: secret_cookie
+      CLUSTERED: "true"
+      CLUSTERED_WITH: rq1
+    ports:
+      - 15672
+    networks:
+      default:
+        aliases:
+          - queue
+
+  rq3:
+    build: ./rabbitmq
+    hostname: rq3
+    depends_on:
+      - db
+    environment:
+      RABBITMQ_ERLANG_COOKIE: secret_cookie
+      CLUSTERED: "true"
+      CLUSTERED_WITH: rq1
+    ports:
+      - 15672
+    networks:
+      default:
+        aliases:
+          - queue
+
+networks:
+  default:

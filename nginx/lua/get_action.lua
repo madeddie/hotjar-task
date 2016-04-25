@@ -15,9 +15,10 @@ if not ok then
   return
 end
 
-local res, err = pg:query("select * from edwintask limit 100")
+local res
+res, err = pg:query("select * from edwintask limit 100")
 if not res then
-  ngx.say("failed retrieving any records: " .. err)
+  ngx.say("failed retrieving records: " .. err)
 end
 ngx.say("<html><head><title>results</title></head><body><pre>")
 ngx.say(inspect(res))
