@@ -28,6 +28,7 @@ services:
           - queue
   sink:
     build: ./sink
+    restart: always
     depends_on:
       - db
     networks:
