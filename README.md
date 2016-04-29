@@ -103,7 +103,7 @@ I've made some small additions to allow to set up a clustered RabbitMQ configura
 
 To add 2 extra rq containers, execute `docker-compose -f docker-compose.yml -f docker-compose.scale_rq.yml up -d`. To retrieve the logs and show the state of all containers from now on use the double -f form, for instance `docker-compose -f docker-compose.yml -f docker-compose.scale_rq.yml logs`.
 
-You will now have 3 rq containers, most probably called hotjar-task_rq1_1, **_rq2_1 and **_rq3_1. These are not yet clustered. The sink app connects to the first container named `queue` from the start (remember the alias), If you would now send a message on the /post endpoint of the app, there's a chance the message will end up in one of the other 2 rq containers' queues.
+You will now have 3 rq containers, most probably called hotjar-task_rq1_1, *_rq2_1 and *_rq3_1. These are not yet clustered. The sink app connects to the first container named `queue` from the start (remember the alias), If you would now send a message on the /post endpoint of the app, there's a chance the message will end up in one of the other 2 rq containers' queues.
 
 To cluster all rq containers execute the `cluster_rq.sh` shell script. It executes some commands directly in the containers using `docker-compose exec`.
 
